@@ -71,6 +71,63 @@ Episode 2 finished with total reward: 60
 ...
 ```
 
+## Getting Started
+
+To get started with this project, follow these steps:
+
+### 1. Clone the Repository
+
+Begin by cloning the project repository to your local machine:
+
+```bash
+git clone https://github.com/kayc0des/Deep_q_learning/
+```
+
+### 2. Navigate to the Project Directory
+
+Once the repository is cloned, navigate to the project folder:
+
+```bash
+cd Deep_q_learning
+```
+
+### 3. Set Up the Virtual Environment
+
+It's recommended to use a virtual environment to manage project dependencies. You can set up a virtual environment with the following commands:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+### 4. Install the Dependencies
+
+It's recommended to use a virtual environment to manage project dependencies. You can set up a virtual environment with the following commands:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Run the Project
+
+Once all dependencies are installed, you can proceed with running the scripts.
+
+- Train the Agent: To begin training the agent, run the following:
+
+```bash
+python train.py
+```
+
+This will start the training process on the Breakout environment. The agent will explore the environment, train using a deep Q-network, and save the trained policy to policy.h5.
+
+- Play with the Trained Agent: After training, you can load the model and watch the agent play:
+
+```bash
+python play.py
+```
+
+This script loads the trained model from policy.h5 and uses the learned policy to play the Breakout game. The game will be displayed in real-time.
+
 ## Additional Notes 
 
 - The project uses gymnasium and ale-py to interact with the Breakout environment, which is an Atari 2600 game.
