@@ -4,38 +4,67 @@ import matplotlib.pyplot as plt
 import gymnasium as gym
 import ale_py
 
-# Register ALE environments (this is not usually necessary if ale_py is installed properly)
-gym.register_envs(ale_py)
+class BreakoutEnvironment:
+    def __init__(self):
+        # Register ALE environments
+        gym.register_envs(ale_py)
+        # Create the Breakout environment
+        self.env = gym.make('ALE/Breakout-v5')
 
-# Create the Breakout environment
-env = gym.make('ALE/Breakout-v5')
+    def reset(self):
+        """Reset the environment and return initial state."""
+        return self.env.reset()
+
+    def step(self, action):
+        """Take an action and return the results."""
+        return self.env.step(action)
+
+    def close(self):
+        """Close the environment."""
+        self.env.close()
 
 
-# Load the Q-table from the file
-with open('q_table.pkl', 'rb') as f:
-    q_table = pickle.load(f)
+class QLearningAgent:
+    def __init__(self, q_table_path):
+        # Load the Q-table from a file
+        with open(q_table_path, 'rb') as f:
+            self.q_table = pickle.load(f)
 
-# Play using the loaded Q-table
-num_episodes = 5
-for episode in range(num_episodes):
-    state, info = env.reset()
-    done = False
-    total_reward = 0
+    def choose_action(self, state):
+        """Choose the best action based on the Q-table."""
+        return np.argmax(self.q_table[state])
 
-    while not done:
-        action = np.argmax(q_table[state])  # Choose the best action from Q-table
-        next_state, reward, terminated, truncated, info = env.step(action)
-        done = terminated or truncated
+    def play(self, env, num_episodes):
+        """Play the game using the Q-table."""
+        for episode in range(num_episodes):
+            state, info = env.reset()
+            done = False
+            total_reward = 0
 
-        state = next_state
-        total_reward += reward
+            while not done:
+                action = self.choose_action(state)
+                next_state, reward, terminated, truncated, info = env.step(action)
+                done = terminated or truncated
 
-        # Display the game frame
-        plt.imshow(state)
-        plt.axis('off')  # Optional: Hide axes for better visualization
-        plt.pause(0.01)  # Pause to create a frame-by-frame effect
+                state = next_state
+                total_reward += reward
 
-    print(f"Episode {episode + 1} finished with total reward: {total_reward}")
+                # Display the game frame
+                plt.imshow(state)
+                plt.axis('off')  # Hide axes for better visualization
+                plt.pause(0.01)  # Pause to create a frame-by-frame effect
 
-env.close()
-plt.show()  # Display the final frame
+            print(f"Episode {episode + 1} finished with total reward: {total_reward}")
+
+
+if __name__ == "__main__":
+    # Initialize environment and agent
+    breakout_env = BreakoutEnvironment()
+    q_learning_agent = QLearningAgent('q_table.pkl')
+
+    # Play using the loaded Q-table
+    q_learning_agent.play(breakout_env, num_episodes=5)
+
+    # Close the environment and display the final frame
+    breakout_env.close()
+    plt.show()
