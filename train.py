@@ -35,7 +35,7 @@ agent = DQNAgent(model=model, nb_actions=env.action_space.n, memory=memory, poli
 agent.compile(Adam(lr=0.00025), metrics=['mae'])
 
 # Train the agent
-agent.fit(env, nb_steps=50000, visualize=True, verbose=2)
+agent.fit(env, nb_steps=20, visualize=True, verbose=2)
 
 # Save the trained policy network
 agent.save_weights('policy.h5', overwrite=True)
